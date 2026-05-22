@@ -1334,33 +1334,40 @@ function preencherContrato(){
   const hoje = new Date().toLocaleDateString('pt-BR');
 
   if(!c||!p){ document.getElementById('contrato-preview').innerHTML='<h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2><p class="sub">Preencha todos os campos para visualizar</p>'; return; }
+
   document.getElementById('contrato-preview').innerHTML = `
     <h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2>
     <p class="sub">Emitido em ${hoje}</p>
     <h4>1. DAS PARTES;</h4>
     <p><strong>LOCADOR:</strong> CTSMimosdecor – Aluguel de Kits de Festa, doravante denominado Clebia Tomé de Souza Pereira, residente e domiciliada na quadra 203 conjunto 80 lote 19, Del Lago II, CEP: 71593-060, Braília - DF. LOCADOR.</p>
-    <p style="margin-top:6px"><strong>LOCATÁRIO:</strong> ${c.nome}, CPF/CNPJ: ${c.cpf||'_____________'}, residente à ${c.endereco||'_____________'}, ${c.bairro||''}, ${c.cidade||''}, CEP ${c.cep||'_____________'}, telefone ${c.tel||'_____________'},.</p>
+    <p style="margin-top:6px"><strong>LOCATÁRIO:</strong> ${c.nome}, CPF/CNPJ: ${c.cpf||'_____________'}, residente à ${c.endereco||'_____________'}, ${c.bairro||''}, ${c.cidade||''}, CEP ${c.cep||'_____________'}, telefone ${c.tel||'_____________'}, e-mail ${c.email||'_____________'}.</p>
     <h4>2. DO OBJETO;</h4>
     <p>O LOCADOR cede ao LOCATÁRIO, a título de locação, o seguinte kit/produto:</p>
     <p style="margin-top:6px;padding:10px;background:var(--cinza-100);border-radius:8px"><strong>${p.nome}</strong> — ${p.desc||''}</p>
     <h4>3. TERMOS CONTRATUAIS;</h4>
-    <p style="margin-top:2px">3.2 - A Entrega deverá acontecer no prazo determinado no contrato, ou será cobrado uma multa de 10 Reais por dia de atraso.</p>
-    <p style="margin-top:2px">3.3 -  Não colocar cola quente em tecidos, cortinas e demais objetos.</p>
-    <p style="margin-top:2px">3.4 -  O transporte da retirada e entrega por conta do cliente.</p>
-    <p style="margin-top:2px">3.5 -  Em caso de desistência NÃO haverá devolução do valor dado no ato reserva.</p>
-    <p style="margin-top:2px">3.6 -  Alteração da data da festa pode ser feita conforme a disponibilidade da empresa.</p>
-    <p style="margin-top:2px">3.7 -  Não deixar as crianças brincarem com a decoração principalmente com o bolo falso, pois são objetos frágeis correndo o risco de quebra ou danificação da peça.</p>
-    <p style="margin-top:2px">3.8 - Não utilizar velas faísca, pois elas queimam tanto o bolo falso como as capas utilizadas nas mesas.</p>
-    <p style="margin-top:2px">3.9 - A não devolução das decorações será cobrado o valor total do material.</p>
-    <p style="margin-top:2px">3.10 - Será cobrada uma taxa pelo material entregue quebrado.</p>
-    <p style="margin-top:2px">3.11 - Sera cobrada uma taxa de R$10,00 para limpeza se os itens vierem MUITO sujos.</p>
-    <p style="margin-top:2px">DATA RETIRADA E DEVOLUÇÃO;</p>
+    
+    <p style="margin-top:6px">3.1 - A Entrega deverá acontecer no prazo determinado no contrato, ou será cobrado uma multa de 10 Reais por dia de atraso.</p>
+    <p style="margin-top:6px">3.2 -  Retirada, dia 27/04/2025 e Devolução dia 28/04/2025.</p>
+    <p style="margin-top:6px">3.3 -  Não colocar cola quente em tecidos, cortinas e demais objetos.</p>
+    <p style="margin-top:6px">3.4 -  O transporte da retirada e entrega por conta do cliente.</p>
+    <p style="margin-top:6px">3.5 -  Em caso de desistência NÃO haverá devolução do valor dado no ato reserva.</p>
+    <p style="margin-top:6px">3.6 -  Alteração da data da festa pode ser feita conforme a disponibilidade da empresa.</p>
+    <p style="margin-top:6px">3.7 -  Não deixar as crianças brincarem com a decoração principalmente com o bolo falso, pois são objetos frágeis correndo o risco de quebra ou danificação da peça.</p>
+    <p style="margin-top:6px">3.8 - Não utilizar velas faísca, pois elas queimam tanto o bolo falso como as capas utilizadas nas mesas.</p>
+    <p style="margin-top:6px">3.9 A não devolução das decorações será cobrado o valor total do material.</p>
+    <p style="margin-top:6px">3.10 Será cobrada uma taxa pelo material entregue quebrado.</p>
+    <p style="margin-top:6px">3.11 Sera cobrada uma taxa de R$10,00 para limpeza se os itens vierem MUITO sujos.</p>
+    <h4></h4>
+    <p style="margin-top:6px">DATA RETIRADA E DEVOLUÇÃO;</p>
     <p><strong>Retirada:</strong> ${fmtDate(retirada)||'_______'} &nbsp;&nbsp; <strong>Devolução:</strong> ${fmtDate(devolucao)||'_______'}</p>
+
     <h4>4. DO VALOR E PAGAMENTO;</h4>
-    <p>Valor total da locação: <strong>${fmt(valor)}.</p>
-    <h4></h4>
+    <p>Valor total da locação: <strong>${fmt(valor)}</strong><br>Caução/Garantia: <strong>${fmt(caucao)}</strong><br>A caução será devolvida mediante a entrega dos itens em perfeito estado.</p>
+    <h4>5. DAS RESPONSABILIDADES</h4>
+    <p>O LOCATÁRIO se responsabiliza pela guarda, conservação e devolução dos itens em perfeito estado. Danos, perdas ou quebras serão cobrados conforme tabela de reposição do LOCADOR.</p>
     ${obs?`<h4>6. OBSERVAÇÕES</h4><p>${obs}</p>`:''}
-    <h4></h4>
+    <h4>${obs?'7':'6'}. DO FORO</h4>
+    <p>As partes elegem o foro da comarca de ${c.cidade||'São Paulo'} para dirimir eventuais conflitos.</p>
     <div class="assinaturas" style="margin-top:30px">
       <div>
         <div style="border-top:1px solid #333;padding-top:6px;text-align:center;font-size:12px;color:#888">
