@@ -1336,13 +1336,19 @@ function preencherContrato(){
   if(!c||!p){ document.getElementById('contrato-preview').innerHTML='<h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2><p class="sub">Preencha todos os campos para visualizar</p>'; return; }
   document.getElementById('contrato-preview').innerHTML = `
     <h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2>
-    <h2>1. DAS PARTES;</h2>
+    <p class="sub">Emitido em ${hoje}</p>
+    <h4>1. DAS PARTES;</h4>
     <p><strong>LOCADOR:</strong> CTSMimosdecor – Aluguel de Kits de Festa, doravante denominado Clebia Tomé de Souza Pereira, residente e domiciliada na quadra 203 conjunto 80 lote 19, Del Lago II, CEP: 71593-060, Braília - DF. LOCADOR.</p>
     <p style="margin-top:6px"><strong>LOCATÁRIO:</strong> ${c.nome}, CPF/CNPJ: ${c.cpf||'_____________'}, residente à ${c.endereco||'_____________'}, ${c.bairro||''}, ${c.cidade||''}, CEP ${c.cep||'_____________'}, telefone ${c.tel||'_____________'},.</p>
     <h4>2. DO OBJETO;</h4>
     <p>O LOCADOR cede ao LOCATÁRIO, a título de locação, o seguinte kit/produto:</p>
     <p style="margin-top:6px;padding:10px;background:var(--cinza-100);border-radius:8px"><strong>${p.nome}</strong> — ${p.desc||''}</p>
     <h4>3. TERMOS CONTRATUAIS;</h4>
+
+    <p>3.2 - A Entrega deverá acontecer no prazo determinado no contrato, ou será cobrado uma multa de 10 Reais por dia de atraso.
+      3.3 -  Não colocar cola quente em tecidos, cortinas e demais objetos.
+      </p>
+
     <p style="margin-top:6px">3.2 - A Entrega deverá acontecer no prazo determinado no contrato, ou será cobrado uma multa de 10 Reais por dia de atraso.</p>
     <p style="margin-top:6px">3.3 -  Não colocar cola quente em tecidos, cortinas e demais objetos.</p>
     <p style="margin-top:6px">3.4 -  O transporte da retirada e entrega por conta do cliente.</p>
