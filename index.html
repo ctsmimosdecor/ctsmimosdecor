@@ -1327,50 +1327,37 @@ function preencherContrato(){
   const retirada = document.getElementById('ct-retirada').value;
   const devolucao = document.getElementById('ct-devolucao').value;
   const valor = document.getElementById('ct-valor').value;
-  const caucao = document.getElementById('ct-caucao').value;
   const obs = document.getElementById('ct-obs').value;
   const c = db.clientes.find(x=>x.id===cId);
   const p = db.produtos.find(x=>x.id===pId);
   const hoje = new Date().toLocaleDateString('pt-BR');
 
-  if(!c||!p){ document.getElementById('contrato-preview').innerHTML='<h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2><p class="sub">Preencha todos os campos para visualizar</p>'; return; }
+  if(!c||!p){ document.getElementById('contrato-preview').innerHTML='<h2>CONTRATO DE LOCAÇÃO</h2><p>Preencha os campos.</p>'; return; }
   
-  // Definimos um tamanho de fonte fixo menor (11px)
+  // Estilo aplicado diretamente no container para forçar a compactação
   document.getElementById('contrato-preview').innerHTML = `
-    <div style="font-size: 11px; line-height: 1.3;">
-      <h2 style="font-size: 18px;">CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2>
-      <p class="sub">Emitido em ${hoje}</p>
-      <h4>1. DAS PARTES;</h4>
-      <p><strong>LOCADOR:</strong> CTSMimosdecor – Aluguel de Kits de Festa, doravante denominado Clebia Tomé de Souza Pereira, residente e domiciliada na quadra 203 conjunto 80 lote 19, Del Lago II, CEP: 71593-060, Braília - DF. LOCADOR.</p>
-      <p style="margin-top:6px"><strong>LOCATÁRIO:</strong> ${c.nome}, CPF/CNPJ: ${c.cpf||'_____________'}, residente à ${c.endereco||'_____________'}, ${c.bairro||''}, ${c.cidade||''}, CEP ${c.cep||'_____________'}, telefone ${c.tel||'_____________'},.</p>
-      <h4>2. DO OBJETO;</h4>
-      <p>O LOCADOR cede ao LOCATÁRIO, a título de locação, o seguinte kit/produto:</p>
-      <p style="margin-top:6px;padding:10px;background:var(--cinza-100);border-radius:8px"><strong>${p.nome}</strong> — ${p.desc||''}</p>
-      <h4>3. TERMOS CONTRATUAIS;</h4>
-      <p style="margin-top:2px">3.2 - A Entrega deverá acontecer no prazo determinado no contrato, ou será cobrado uma multa de 10 Reais por dia de atraso.</p>
-      <p style="margin-top:2px">3.3 -  Não colocar cola quente em tecidos, cortinas e demais objetos.</p>
-      <p style="margin-top:2px">3.4 -  O transporte da retirada e entrega por conta do cliente.</p>
-      <p style="margin-top:2px">3.5 -  Em caso de desistência NÃO haverá devolução do valor dado no ato reserva.</p>
-      <p style="margin-top:2px">3.6 -  Alteração da data da festa pode ser feita conforme a disponibilidade da empresa.</p>
-      <p style="margin-top:2px">3.7 -  Não deixar as crianças brincarem com a decoração principalmente com o bolo falso, pois são objetos frágeis correndo o risco de quebra ou danificação da peça.</p>
-      <p style="margin-top:2px">3.8 - Não utilizar velas faísca, pois elas queimam tanto o bolo falso como as capas utilizadas nas mesas.</p>
-      <p style="margin-top:2px">3.9 - A não devolução das decorações será cobrado o valor total do material.</p>
-      <p style="margin-top:2px">3.10 - Será cobrada uma taxa pelo material entregue quebrado.</p>
-      <p style="margin-top:2px">3.11 Sera cobrada uma taxa de R$10,00 para limpeza se os itens vierem MUITO sujos.</p>
-      <p style="margin-top:2px">DATA RETIRADA E DEVOLUÇÃO;</p>
-      <p><strong>Retirada:</strong> ${fmtDate(retirada)||'_______'} &nbsp;&nbsp; <strong>Devolução:</strong> ${fmtDate(devolucao)||'_______'}</p>
-      <h4>4. DO VALOR E PAGAMENTO;</h4>
-      <p>Valor total da locação: <strong>${fmt(valor)}.</p>
-      ${obs?`<h4>6. OBSERVAÇÕES</h4><p>${obs}</p>`:''}
-      <div class="assinaturas" style="margin-top:30px">
-        <div style="display: flex; gap: 20px;">
-          <div style="flex: 1; border-top:1px solid #333;padding-top:6px;text-align:center;font-size:10px;color:#888">
-            LOCADOR – CTSMimosdecor<br>Data: ___/___/______
-          </div>
-          <div style="flex: 1; border-top:1px solid #333;padding-top:6px;text-align:center;font-size:10px;color:#888">
-            LOCATÁRIO – ${c.nome}<br>Data: ___/___/______
-          </div>
-        </div>
+    <div style="font-size: 10px; line-height: 1.1; font-family: Arial, sans-serif; padding: 0; margin: 0;">
+      <h2 style="font-size: 14px; margin: 2px 0; text-align: center;">CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2>
+      <p style="margin: 0; text-align: center; font-size: 9px;">Emitido em ${hoje}</p>
+      
+      <h4 style="margin: 4px 0 1px 0; font-size: 11px; border-bottom: 1px solid #000;">1. DAS PARTES</h4>
+      <p style="margin: 0;"><strong>LOCADOR:</strong> Clebia Tomé de Souza Pereira. <strong>LOCATÁRIO:</strong> ${c.nome}, CPF: ${c.cpf||'___'}.</p>
+      
+      <h4 style="margin: 4px 0 1px 0; font-size: 11px; border-bottom: 1px solid #000;">2. DO OBJETO</h4>
+      <p style="margin: 0;">Kit: <strong>${p.nome}</strong>. Desc: ${p.desc||''}</p>
+      
+      <h4 style="margin: 4px 0 1px 0; font-size: 11px; border-bottom: 1px solid #000;">3. TERMOS CONTRATUAIS</h4>
+      <p style="margin: 0;">3.2 Atraso: R$10/dia. 3.3 Proibido cola quente. 3.4 Frete por conta do cliente. 3.5 Desistência: sem reembolso. 3.6 Data conforme disponibilidade. 3.7 Cuidado com peças frágeis/bolo. 3.8 Proibido velas faísca. 3.9 Não devolução: cobrança total. 3.10 Quebras: cobrança. 3.11 Sujeira excessiva: R$10,00.</p>
+
+      <p style="margin: 3px 0;"><strong>Retirada:</strong> ${fmtDate(retirada)||'___'} | <strong>Devolução:</strong> ${fmtDate(devolucao)||'___'}</p>
+      
+      <h4 style="margin: 4px 0 1px 0; font-size: 11px; border-bottom: 1px solid #000;">4. VALOR E ASSINATURAS</h4>
+      <p style="margin: 0;"><strong>Valor Total:</strong> ${fmt(valor)}</p>
+      ${obs?`<p style="margin: 0;"><strong>OBS:</strong> ${obs}</p>`:''}
+      
+      <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+        <div style="width: 48%; border-top: 1px solid #000; text-align: center; font-size: 9px;">LOCADOR (CTSMimosdecor)</div>
+        <div style="width: 48%; border-top: 1px solid #000; text-align: center; font-size: 9px;">LOCATÁRIO (${c.nome})</div>
       </div>
     </div>`;
 }
