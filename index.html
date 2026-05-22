@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTSMimosdecor-CRM – Gestão de Kits de Festa</title>
+<title>CTSMimosdecor – Gestão de Kits de Festa</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -328,7 +328,8 @@
 <!-- SIDEBAR -->
 <aside id="sidebar">
   <div class="logo">
-    <h1>CTS<span>CRM</span></h1>
+    <h1>CRM CTS<span></span></h1>
+    <h1><span>MimosDecor</span></h1>
     <p>Gestão de Kits de Festa</p>
   </div>
   <nav class="nav">
@@ -360,7 +361,7 @@
       Gerar Contrato
     </div>
   </nav>
-  <div class="sidebar-footer"><p>CTSMimosdecor-CRM v1.0 © 2025</p></div>
+  <div class="sidebar-footer"><p>CTSMimosdecor v1.0 © 2025</p></div>
 </aside>
 
 <!-- MAIN -->
@@ -1337,13 +1338,13 @@ function preencherContrato(){
   document.getElementById('contrato-preview').innerHTML = `
     <h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2>
     <p class="sub">Emitido em ${hoje}</p>
-    <h4>1. DAS PARTES</h4>
+    <h4>1. DAS PARTES;</h4>
     <p><strong>LOCADOR:</strong> CTSMimosdecor – Aluguel de Kits de Festa, doravante denominado Clebia Tomé de Souza Pereira, residente e domiciliada na quadra 203 conjunto 80 lote 19, Del Lago II, CEP: 71593-060, Braília - DF. LOCADOR.</p>
     <p style="margin-top:6px"><strong>LOCATÁRIO:</strong> ${c.nome}, CPF/CNPJ: ${c.cpf||'_____________'}, residente à ${c.endereco||'_____________'}, ${c.bairro||''}, ${c.cidade||''}, CEP ${c.cep||'_____________'}, telefone ${c.tel||'_____________'}, e-mail ${c.email||'_____________'}.</p>
-    <h4>2. DO OBJETO</h4>
+    <h4>2. DO OBJETO;</h4>
     <p>O LOCADOR cede ao LOCATÁRIO, a título de locação, o seguinte kit/produto:</p>
     <p style="margin-top:6px;padding:10px;background:var(--cinza-100);border-radius:8px"><strong>${p.nome}</strong> — ${p.desc||''}</p>
-    <h4>3. TERMOS CONTRATUAIS</h4>
+    <h4>3. TERMOS CONTRATUAIS;</h4>
     
     <p style="margin-top:6px">3.1 - A Entrega deverá acontecer no prazo determinado no contrato, ou será cobrado uma multa de 10 Reais por dia de atraso.</p>
     <p style="margin-top:6px">3.2 -  Retirada, dia 27/04/2025 e Devolução dia 28/04/2025.</p>
@@ -1360,7 +1361,7 @@ function preencherContrato(){
     <p style="margin-top:6px">DATA RETIRADA E DEVOLUÇÃO;</p>
     <p><strong>Retirada:</strong> ${fmtDate(retirada)||'_______'} &nbsp;&nbsp; <strong>Devolução:</strong> ${fmtDate(devolucao)||'_______'}</p>
 
-    <h4>4. DO VALOR E PAGAMENTO</h4>
+    <h4>4. DO VALOR E PAGAMENTO;</h4>
     <p>Valor total da locação: <strong>${fmt(valor)}</strong><br>Caução/Garantia: <strong>${fmt(caucao)}</strong><br>A caução será devolvida mediante a entrega dos itens em perfeito estado.</p>
     <h4>5. DAS RESPONSABILIDADES</h4>
     <p>O LOCATÁRIO se responsabiliza pela guarda, conservação e devolução dos itens em perfeito estado. Danos, perdas ou quebras serão cobrados conforme tabela de reposição do LOCADOR.</p>
@@ -1370,7 +1371,7 @@ function preencherContrato(){
     <div class="assinaturas" style="margin-top:30px">
       <div>
         <div style="border-top:1px solid #333;padding-top:6px;text-align:center;font-size:12px;color:#888">
-          LOCADOR – CTSMimosdecor-CRM<br>Data: ___/___/______
+          LOCADOR – CTSMimosdecor<br>Data: ___/___/______
         </div>
       </div>
       <div>
