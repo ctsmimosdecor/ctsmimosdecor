@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTSmimosdecor – Gestão de Kits de Festa</title>
+<title>CTSMimosdecor – Gestão de Kits de Festa</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1338,15 +1338,16 @@ function preencherContrato(){
     <h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2>
     <p class="sub">Emitido em ${hoje}</p>
     <h4>1. DAS PARTES</h4>
-    <p><strong>LOCADOR:</strong> CTSmimosdecor – Aluguel de Kits de Festa, doravante denominado Clebia Tomé de Souza Pereira inscrita no CPF: 014.863.111-80 domiciliada na Quadra 203 Conjunto 80 Lote 19 Del Lago 2 Brasiília distrito Federal CEP: 71593-060.</p>
-    
+    <p><strong>LOCADOR:</strong> CTSmimosdecor – Aluguel de Kits de Festa, doravante denominado Clebia tome de Souza Pereira residente e domiciliada na Quadra 203, Conjunto 80, Lote 19, Del Lago II, Itapoã II, CEP: 71.593-060, Brasília - DF.</p>
+
     <p style="margin-top:6px"><strong>LOCATÁRIO:</strong> ${c.nome}, CPF/CNPJ: ${c.cpf||'_____________'}, residente à ${c.endereco||'_____________'}, ${c.bairro||''}, ${c.cidade||''}, CEP ${c.cep||'_____________'}, telefone ${c.tel||'_____________'}, e-mail ${c.email||'_____________'}.</p>
     <h4>2. DO OBJETO</h4>
     <p>O LOCADOR cede ao LOCATÁRIO, a título de locação, o seguinte kit/produto:</p>
     <p style="margin-top:6px;padding:10px;background:var(--cinza-100);border-radius:8px"><strong>${p.nome}</strong> — ${p.desc||''}</p>
     <h4>3. DO PRAZO</h4>
+    1.A Entrega deverá acontecer no prazo determinado no contrato, ou será cobrado uma multa de 10 Reais por dia de atraso. 
     <p><strong>Retirada:</strong> ${fmtDate(retirada)||'_______'} &nbsp;&nbsp; <strong>Devolução:</strong> ${fmtDate(devolucao)||'_______'}</p>
-    <p style="margin-top:6px">O atraso na devolução sujeitará o LOCATÁRIO ao pagamento de multa de R$ 50,00 por dia de atraso.</p>
+    <p style="margin-top:6px">O atraso na devolução sujeitará o LOCATÁRIO ao pagamento de multa de R$ 10,00 por dia de atraso.</p>
     <h4>4. DO VALOR E PAGAMENTO</h4>
     <p>Valor total da locação: <strong>${fmt(valor)}</strong><br>Caução/Garantia: <strong>${fmt(caucao)}</strong><br>A caução será devolvida mediante a entrega dos itens em perfeito estado.</p>
     <h4>5. DAS RESPONSABILIDADES</h4>
@@ -1357,7 +1358,7 @@ function preencherContrato(){
     <div class="assinaturas" style="margin-top:30px">
       <div>
         <div style="border-top:1px solid #333;padding-top:6px;text-align:center;font-size:12px;color:#888">
-          LOCADOR – CTSmimosdecor-CRM<br>Data: ___/___/______
+          LOCADOR – CTSmimosdecor<br>Data: ___/___/______
         </div>
       </div>
       <div>
