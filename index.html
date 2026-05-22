@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTSMimosdecor – Gestão de Kits de Festa</title>
+<title>CTSMimosdecor-CRM – Gestão de Kits de Festa</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -328,7 +328,7 @@
 <!-- SIDEBAR -->
 <aside id="sidebar">
   <div class="logo">
-    <h1>CTS<span>Mimosdecor</span></h1>
+    <h1>CTS<span>CRM</span></h1>
     <p>Gestão de Kits de Festa</p>
   </div>
   <nav class="nav">
@@ -360,7 +360,7 @@
       Gerar Contrato
     </div>
   </nav>
-  <div class="sidebar-footer"><p>CTSmimosdecor v1.0 © 2025</p></div>
+  <div class="sidebar-footer"><p>CTSMimosdecor-CRM v1.0 © 2025</p></div>
 </aside>
 
 <!-- MAIN -->
@@ -1338,16 +1338,28 @@ function preencherContrato(){
     <h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2>
     <p class="sub">Emitido em ${hoje}</p>
     <h4>1. DAS PARTES</h4>
-    <p><strong>LOCADOR:</strong> CTSmimosdecor – Aluguel de Kits de Festa, doravante denominado Clebia tome de Souza Pereira residente e domiciliada na Quadra 203, Conjunto 80, Lote 19, Del Lago II, Itapoã II, CEP: 71.593-060, Brasília - DF.</p>
-
+    <p><strong>LOCADOR:</strong> CTSMimosdecor – Aluguel de Kits de Festa, doravante denominado Clebia Tomé de Souza Pereira, residente e domiciliada na quadra 203 conjunto 80 lote 19, Del Lago II, CEP: 71593-060, Braília - DF. LOCADOR.</p>
     <p style="margin-top:6px"><strong>LOCATÁRIO:</strong> ${c.nome}, CPF/CNPJ: ${c.cpf||'_____________'}, residente à ${c.endereco||'_____________'}, ${c.bairro||''}, ${c.cidade||''}, CEP ${c.cep||'_____________'}, telefone ${c.tel||'_____________'}, e-mail ${c.email||'_____________'}.</p>
     <h4>2. DO OBJETO</h4>
     <p>O LOCADOR cede ao LOCATÁRIO, a título de locação, o seguinte kit/produto:</p>
     <p style="margin-top:6px;padding:10px;background:var(--cinza-100);border-radius:8px"><strong>${p.nome}</strong> — ${p.desc||''}</p>
-    <h4>3. DO PRAZO</h4>
-    1.A Entrega deverá acontecer no prazo determinado no contrato, ou será cobrado uma multa de 10 Reais por dia de atraso. 
+    <h4>3. TERMOS CONTRATUAIS</h4>
+    
+    <p style="margin-top:6px">3.1 - A Entrega deverá acontecer no prazo determinado no contrato, ou será cobrado uma multa de 10 Reais por dia de atraso.</p>
+    <p style="margin-top:6px">3.2 -  Retirada, dia 27/04/2025 e Devolução dia 28/04/2025.</p>
+    <p style="margin-top:6px">3.3 -  Não colocar cola quente em tecidos, cortinas e demais objetos.</p>
+    <p style="margin-top:6px">3.4 -  O transporte da retirada e entrega por conta do cliente.</p>
+    <p style="margin-top:6px">3.5 -  Em caso de desistência NÃO haverá devolução do valor dado no ato reserva.</p>
+    <p style="margin-top:6px">3.6 -  Alteração da data da festa pode ser feita conforme a disponibilidade da empresa.</p>
+    <p style="margin-top:6px">3.7 -  Não deixar as crianças brincarem com a decoração principalmente com o bolo falso, pois são objetos frágeis correndo o risco de quebra ou danificação da peça.</p>
+    <p style="margin-top:6px">3.8 - Não utilizar velas faísca, pois elas queimam tanto o bolo falso como as capas utilizadas nas mesas.</p>
+    <p style="margin-top:6px">3.9 A não devolução das decorações será cobrado o valor total do material.</p>
+    <p style="margin-top:6px">3.10 Será cobrada uma taxa pelo material entregue quebrado.</p>
+    <p style="margin-top:6px">3.11 Sera cobrada uma taxa de R$10,00 para limpeza se os itens vierem MUITO sujos.</p>
+    <h4></h4>
+    <p style="margin-top:6px">DATA RETIRADA E DEVOLUÇÃO;</p>
     <p><strong>Retirada:</strong> ${fmtDate(retirada)||'_______'} &nbsp;&nbsp; <strong>Devolução:</strong> ${fmtDate(devolucao)||'_______'}</p>
-    <p style="margin-top:6px">O atraso na devolução sujeitará o LOCATÁRIO ao pagamento de multa de R$ 10,00 por dia de atraso.</p>
+
     <h4>4. DO VALOR E PAGAMENTO</h4>
     <p>Valor total da locação: <strong>${fmt(valor)}</strong><br>Caução/Garantia: <strong>${fmt(caucao)}</strong><br>A caução será devolvida mediante a entrega dos itens em perfeito estado.</p>
     <h4>5. DAS RESPONSABILIDADES</h4>
@@ -1358,7 +1370,7 @@ function preencherContrato(){
     <div class="assinaturas" style="margin-top:30px">
       <div>
         <div style="border-top:1px solid #333;padding-top:6px;text-align:center;font-size:12px;color:#888">
-          LOCADOR – CTSmimosdecor<br>Data: ___/___/______
+          LOCADOR – CTSMimosdecor-CRM<br>Data: ___/___/______
         </div>
       </div>
       <div>
