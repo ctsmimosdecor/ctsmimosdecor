@@ -1387,10 +1387,12 @@ function gerarContratoRapido(locId){
 
 function gerarPDF(){
   const preview = document.getElementById('contrato-preview').innerHTML;
-  const w = window.open('','_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Contrato de Locação</title><style>body{font-family:Segoe UI,sans-serif;max-width:700px;margin:40px auto;color:#1a1a1a;font-size:14px;line-height:1.8;padding:0 20px}h2{text-align:center;color:#E8527A;margin-bottom:4px;font-size:20px}.sub{text-align:center;color:#888;font-size:12px;margin-bottom:24px}h4{margin:18px 0 6px;color:#1a1a1a}p{color:#444;margin-bottom:6px}.assinaturas{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}.assinaturas>div{border-top:1px solid #333;padding-top:8px;text-align:center;font-size:12px;color:#888}strong{color:#1a1a1a}@media print{body{margin:20px}}</style></head><body>' + preview + '</body></html>');
-  w.document.close();
-  setTimeout(()=>w.print(),400);
+  // Usa Blob URL em vez de document.write (compatível com GitHub Pages)
+  const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Contrato de Locação</title><style>body{font-family:Segoe UI,sans-serif;max-width:700px;margin:40px auto;color:#1a1a1a;font-size:14px;line-height:1.8;padding:0 20px}h2{text-align:center;color:#E8527A;margin-bottom:4px;font-size:20px}.sub{text-align:center;color:#888;font-size:12px;margin-bottom:24px}h4{margin:18px 0 6px;color:#1a1a1a}p{color:#444;margin-bottom:6px}.assinaturas{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}.assinaturas>div{border-top:1px solid #333;padding-top:8px;text-align:center;font-size:12px;color:#888}strong{color:#1a1a1a}@media print{body{margin:20px}}</style></head><body>' + preview + '</body></html>';
+  const blob = new Blob([html], {type: 'text/html'});
+  const url = URL.createObjectURL(blob);
+  const w = window.open(url, '_blank');
+  setTimeout(()=>{ if(w) w.print(); URL.revokeObjectURL(url); }, 800);
 }
 
 // =============== TOAST ===============
@@ -1443,62 +1445,5 @@ document.querySelectorAll('.bnav-item').forEach(item=>{
   </div>
 </nav>
 
-JavaScript
-<script>
-  // 1. Lógica de navegação: ao clicar, esconde as páginas e mostra a escolhida
-  function navegar(pageId) {
-    // Esconde todas as div com classe 'page'
-    document.querySelectorAll('.page').forEach(el => el.style.display = 'none');
-    
-    // Mostra apenas a página selecionada
-    const target = document.getElementById('page-' + pageId);
-    if (target) {
-      target.style.display = 'block';
-    }
-  }
-
-  // 2. Adiciona o evento de clique a todos os botões da barra inferior
-  document.querySelectorAll('.bnav-item').forEach(item => {
-    item.addEventListener('click', function() {
-      const page = this.getAttribute('data-page'); // Ex: 'locacoes'
-      
-      // Chama a função de navegação
-      navegar(page);
-      
-      // Opcional: Efeito visual de botão ativo
-      document.querySelectorAll('.bnav-item').forEach(i => i.style.color = '#A8A59E');
-      this.style.color = '#E8527A'; 
-    });
-  });
-
-  // 3. Garante que, ao carregar, uma página esteja visível (ex: início)
-  window.onload = () => navegar('inicio');
-</script>
-
-<script>
-  // Função que faz a troca das páginas
-  function trocarPagina(pageId) {
-    // 1. Esconde todos os blocos de conteúdo (ajuste a classe se necessário, usei '.page')
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    
-    // 2. Mostra apenas o bloco correspondente ao ID clicado
-    const alvo = document.getElementById('page-' + pageId);
-    if (alvo) {
-      alvo.style.display = 'block';
-    }
-  }
-
-  // Adiciona o comportamento aos botões da barra inferior
-  document.querySelectorAll('.bnav-item').forEach(item => {
-    item.addEventListener('click', function() {
-      const pageName = this.getAttribute('data-page'); // Pega o valor: 'inicio', 'locacoes', etc.
-      trocarPagina(pageName);
-      
-      // Feedback visual: mantém a cor ativa
-      document.querySelectorAll('.bnav-item').forEach(i => i.style.color = '#A8A59E');
-      this.style.color = '#E8527A';
-    });
-  });
-</script>
 </body>
 </html>
