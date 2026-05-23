@@ -1398,8 +1398,12 @@ function gerarPDF() {
   const opt = {
     margin:       10,
     filename:     'Contrato_Locacao.pdf',
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true },
+    image:        { type: 'jpeg', quality: 1 }, // Aumentada para 1 para evitar borrões
+    html2canvas:  { 
+      scale: 2, 
+      useCORS: true, 
+      letterRendering: true // Melhora a leitura de caracteres especiais
+    },
     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
