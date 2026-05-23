@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTSMimosdecor – Gestão de Kits de Festa</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1337,7 +1336,6 @@ function preencherContrato(){
 
   document.getElementById('contrato-preview').innerHTML = `
     <h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2>
-    <p class="sub">Emitido em ${hoje}</p>
     <h4>1 - DAS PARTES;</h4>
     <p><strong>LOCADOR:</strong> CTSMimosdecor – Aluguel de Kits para Festa, doravante denominado Clebia Tomé de Souza Pereira, residente e domiciliada na quadra 203 conjunto 80 lote 19, Del Lago II, CEP: 71593-060, Braília - DF.</p>
     <p style="margin-top:6px"><strong>LOCATÁRIO:</strong> ${c.nome}, CPF/CNPJ: ${c.cpf||'_____________'}, residente à ${c.endereco||'_____________'}, ${c.bairro||''}, ${c.cidade||''}, CEP ${c.cep||'_____________'}, telefone ${c.tel||'_____________'}.</p>
