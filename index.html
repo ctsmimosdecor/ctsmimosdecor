@@ -1319,7 +1319,7 @@ function renderMobileFinanceiro(list){
   }).join('') : '<p style="text-align:center;padding:20px;color:var(--cinza-400)">Sem registros</p>';
 }
 
-// =============== ===============CONTRATO===============
+// ===============CONTRATO===============
 function preencherContrato(){
   const cId = parseInt(document.getElementById('ct-cliente').value);
   const pId = parseInt(document.getElementById('ct-produto').value);
@@ -1330,12 +1330,11 @@ function preencherContrato(){
   const obs = document.getElementById('ct-obs').value;
   const c = db.clientes.find(x=>x.id===cId);
   const p = db.produtos.find(x=>x.id===pId);
-  const hoje = new Date().toLocaleDateString('pt-BR');
 
-  if(!c||!p){ document.getElementById('contrato-preview').innerHTML='<h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2><p class="sub">Preencha todos os campos para visualizar</p>'; return; }
+  if(!c||!p){ document.getElementById('contrato-preview').innerHTML='<h2>CONTRATO DE LOCAÇÃO DE KITS PARA FESTA</h2><p class="sub">Preencha todos os campos para visualizar</p>'; return; }
 
   document.getElementById('contrato-preview').innerHTML = `
-    <h2>CONTRATO DE LOCAÇÃO DE KITS DE FESTA</h2>
+    <h2>CONTRATO DE LOCAÇÃO DE KITS PARA FESTA</h2>
     <h4>1 - DAS PARTES;</h4>
     <p><strong>LOCADOR:</strong> CTSMimosdecor – Aluguel de Kits para Festa, doravante denominado Clebia Tomé de Souza Pereira, residente e domiciliada na quadra 203 conjunto 80 lote 19, Del Lago II, CEP: 71593-060, Braília - DF.</p>
     <p style="margin-top:6px"><strong>LOCATÁRIO:</strong> ${c.nome}, CPF/CNPJ: ${c.cpf||'_____________'}, residente à ${c.endereco||'_____________'}, ${c.bairro||''}, ${c.cidade||''}, CEP ${c.cep||'_____________'}, telefone ${c.tel||'_____________'}.</p>
