@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1391,13 +1392,18 @@ function gerarContratoRapido(locId){
   },100);
 }
 
-function gerarPDF(){
-  const preview = document.getElementById('contrato-preview').innerHTML;
-  const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title></title><style>body{font-family:Segoe UI,sans-serif;max-width:700px;margin:40px auto;color:#1a1a1a;font-size:14px;line-height:1.8;padding:0 20px}h2{text-align:center;color:#E8527A;margin-bottom:4px;font-size:20px}.sub{text-align:center;color:#888;font-size:12px;margin-bottom:24px}h4{margin:18px 0 6px;color:#1a1a1a}p{color:#444;margin-bottom:6px}.assinaturas{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}.assinaturas>div{border-top:1px solid #333;padding-top:8px;text-align:center;font-size:12px;color:#888}strong{color:#1a1a1a}@media print{body{margin:20px}}</style></head><body>' + preview + '</body></html>';
-  const blob = new Blob([html], {type: 'text/html'});
-  const url = URL.createObjectURL(blob);
-  const w = window.open(url, '_blank');
-  setTimeout(()=>{ if(w) w.print(); URL.revokeObjectURL(url); }, 800);
+function gerarPDF() {
+  const element = document.getElementById('contrato-preview');
+  
+  const opt = {
+    margin:       10,
+    filename:     'Contrato_Locacao.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save();
 }
 
 // =============== TOAST ===============
