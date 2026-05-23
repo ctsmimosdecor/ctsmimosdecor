@@ -1460,31 +1460,35 @@ document.querySelectorAll('.bnav-item').forEach(item=>{
     </div>
   </div>
 </nav>
-</div> <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB_ZIBPQnAbp7T5oVa6P8Sa67RamfU1vac",
-            authDomain: "ctsmimosdecor-crm.firebaseapp.com",
-            projectId: "ctsmimosdecor-crm",
-            storageBucket: "ctsmimosdecor-crm.firebasestorage.app",
-            messagingSenderId: "429431424483",
-            appId: "1:429431424483:web:0230a142c346f37e758cd6",
-            measurementId: "G-18F9TH4NX5"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyB_ZIBPQnAbp7T5oVa6P8Sa67RamfU1vac",
+        authDomain: "ctsmimosdecor-crm.firebaseapp.com",
+        projectId: "ctsmimosdecor-crm",
+        storageBucket: "ctsmimosdecor-crm.firebasestorage.app",
+        messagingSenderId: "429431424483",
+        appId: "1:429431424483:web:0230a142c346f37e758cd6",
+        measurementId: "G-18F9TH4NX5"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('conteudo').style.display = 'block';
-            } else {
-                window.location.href = "login.html";
-            }
-        });
-    </script>
-</body>
+    // Proteção absoluta: esconde o body antes de qualquer coisa
+    document.body.style.display = 'none';
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // Se logado, mostra tudo
+            document.body.style.display = 'block';
+        } else {
+            // Se não, redireciona IMEDIATAMENTE
+            window.location.href = "login.html";
+        }
+    });
+</script>
 </body>
 </html>
