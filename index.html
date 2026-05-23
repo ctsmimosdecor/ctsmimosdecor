@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+#conteudo { display: none; }
   :root {
     --rosa: #E8527A; --rosa-light: #FCE8EF; --rosa-dark: #B83158;
     --laranja: #F4845F; --laranja-light: #FEF0EB;
@@ -321,7 +322,7 @@
 </style>
 </head>
 <body>
-
+    <div id="conteudo">
 <!-- Overlay sidebar mobile -->
 <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
@@ -1459,6 +1460,31 @@ document.querySelectorAll('.bnav-item').forEach(item=>{
     </div>
   </div>
 </nav>
+</div> <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyB_ZIBPQnAbp7T5oVa6P8Sa67RamfU1vac",
+            authDomain: "ctsmimosdecor-crm.firebaseapp.com",
+            projectId: "ctsmimosdecor-crm",
+            storageBucket: "ctsmimosdecor-crm.firebasestorage.app",
+            messagingSenderId: "429431424483",
+            appId: "1:429431424483:web:0230a142c346f37e758cd6",
+            measurementId: "G-18F9TH4NX5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('conteudo').style.display = 'block';
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+    </script>
+</body>
 </body>
 </html>
