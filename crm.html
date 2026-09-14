@@ -142,6 +142,7 @@
   .foto-thumb { position:relative; aspect-ratio:1; border-radius:8px; overflow:hidden; }
   .foto-thumb img { width:100%; height:100%; object-fit:cover; }
   .foto-thumb button { position:absolute; top:3px; right:3px; background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; font-size:12px; display:flex; align-items:center; justify-content:center; }
+  .foto-carregando { background:var(--cinza-100); display:flex; align-items:center; justify-content:center; }
 
   /* ESTOQUE GRID */
   .estoque-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
@@ -318,9 +319,25 @@
     /* Financeiro métricas: 1 coluna */
     #page-financeiro .metrics { grid-template-columns:1fr !important; }
   }
+
+  /* LOADING (Firestore) */
+  #loading-overlay { position:fixed; inset:0; background:var(--cinza-100); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; }
+  #loading-overlay p { color:var(--cinza-600); font-size:14px; font-family:'DM Sans',sans-serif; }
+  .spinner { width:36px; height:36px; border:3px solid var(--cinza-200); border-top-color:var(--rosa); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* LOGOUT */
+  .btn-logout { width:100%; margin-top:10px; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.6); border:none; padding:8px; border-radius:8px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif; }
+  .btn-logout:hover { background:rgba(255,255,255,0.15); color:#fff; }
 </style>
 </head>
 <body>
+
+<!-- Loading enquanto busca os dados no Firestore -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <p>Carregando seus dados...</p>
+</div>
 
 <!-- Overlay sidebar mobile -->
 <div id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -361,7 +378,10 @@
       Gerar Contrato
     </div>
   </nav>
-  <div class="sidebar-footer"><p>CTSMimosdecor v1.0 © 2025</p></div>
+  <div class="sidebar-footer">
+    <p>CTSMimosdecor v1.0 © 2025</p>
+    <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+  </div>
 </aside>
 
 <!-- MAIN -->
@@ -815,32 +835,122 @@
   <span id="toast-msg">Salvo com sucesso!</span>
 </div>
 
+<!-- =============== FIREBASE (auth + Firestore) =============== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+  // Mesma configuração usada no index.html (login)
+  const firebaseConfig = {
+    apiKey: "AIzaSyB_ZIBPQnAbp7T5oVa6P8Sa67RamfU1vac",
+    authDomain: "ctsmimosdecor-crm.firebaseapp.com",
+    projectId: "ctsmimosdecor-crm",
+    storageBucket: "ctsmimosdecor-crm.firebasestorage.app",
+    messagingSenderId: "429431424483",
+    appId: "1:429431424483:web:0230a142c346f37e758cd6",
+    measurementId: "G-18F9TH4NX5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const firestore = getFirestore(app);
+  const storage = getStorage(app);
+
+  // Sobe uma foto para o Storage e devolve a URL pública dela
+  window.uploadFotoParaStorage = async function(file){
+    const nomeArquivo = `produtos/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${file.name}`;
+    const fotoRef = ref(storage, nomeArquivo);
+    await uploadBytes(fotoRef, file);
+    return await getDownloadURL(fotoRef);
+  };
+  // Todos os dados do CRM ficam guardados num único documento na coleção "crm"
+  const DOC_REF = doc(firestore, "crm", "dados");
+
+  // Sai da conta e volta para a tela de login
+  window.fazerLogout = function(){
+    signOut(auth).then(()=>{ window.location.href = "index.html"; });
+  };
+
+  // Salva o estado atual (clientes/produtos/locacoes) no Firestore
+  window.salvarNaNuvem = async function(dados){
+    try{
+      await setDoc(DOC_REF, dados);
+    }catch(e){
+      console.error("Erro ao salvar no Firestore:", e);
+      toast('Erro ao salvar na nuvem. Verifique sua internet.', 4000);
+    }
+  };
+
+  // Só deixa entrar no CRM se estiver logado; senão manda para o login
+  onAuthStateChanged(auth, async (user) => {
+    if(!user){
+      window.location.href = "index.html";
+      return;
+    }
+    let dadosNuvem = { clientes: [], produtos: [], locacoes: [] };
+    try{
+      const snap = await getDoc(DOC_REF);
+      if(snap.exists()) dadosNuvem = snap.data();
+    }catch(e){
+      console.error("Erro ao carregar dados do Firestore:", e);
+      alert("Não foi possível carregar os dados da nuvem. Verifique sua internet e recarregue a página.");
+    }
+    window.iniciarCRM(dadosNuvem);
+  });
+</script>
+
 <script>
 // =============== DADOS ===============
+// db começa vazio; é preenchido por iniciarCRM() assim que os dados chegam do Firestore
 let db = {
-  clientes: JSON.parse(localStorage.getItem('crm_clientes')||'[]'),
-  produtos: JSON.parse(localStorage.getItem('crm_produtos')||'[]'),
-  locacoes: JSON.parse(localStorage.getItem('crm_locacoes')||'[]'),
+  clientes: [],
+  produtos: [],
+  locacoes: [],
   editingId: null
 };
 
-// Dados iniciais de demonstração se vazio
-if(db.produtos.length===0){
-  db.produtos = [
-    {id:1,nome:'Kit Jardim Encantado',cat:'Kit Completo',status:'Disponível',preco:350,qtd:2,desc:'Mesa oval, 8 cadeiras, arco floral, toalhas, arranjos de mesa',fotos:[]},
-    {id:2,nome:'Kit Balões Coloridos',cat:'Decoração',status:'Disponível',preco:150,qtd:5,desc:'200 balões, bomba, fio de balonismo, peso',fotos:[]},
-    {id:3,nome:'Tenda 6x6m',cat:'Lona/Tendas',status:'Disponível',preco:280,qtd:3,desc:'Tenda piramidal, com laterais',fotos:[]},
-  ];
-  db.clientes = [
-    {id:1,nome:'Ana Paula Silva',cpf:'123.456.789-00',tel:'(11) 99999-1111',email:'ana@email.com',endereco:'Rua das Flores, 100',bairro:'Centro',cidade:'São Paulo – SP',cep:'01000-000',obs:'Cliente fiel desde 2023'},
-    {id:2,nome:'Carlos Eduardo Lima',cpf:'987.654.321-00',tel:'(11) 98888-2222',email:'carlos@email.com',endereco:'Av. Paulista, 500',bairro:'Bela Vista',cidade:'São Paulo – SP',cep:'01310-000',obs:''},
-  ];
-  db.locacoes = [
-    {id:1,clienteId:1,produtoId:1,retirada:'2025-05-10',devolucao:'2025-05-12',valor:350,caucao:100,pagamento:'Pix',status:'Devolvido',obs:''},
-    {id:2,clienteId:2,produtoId:2,retirada:'2025-05-18',devolucao:'2025-05-20',valor:150,caucao:50,pagamento:'Dinheiro',status:'Ativo',obs:''},
-  ];
-  salvarDB();
+function salvarDB(){
+  window.salvarNaNuvem({
+    clientes: db.clientes,
+    produtos: db.produtos,
+    locacoes: db.locacoes
+  });
 }
+
+// Chamada pelo script do Firebase (acima) depois que os dados da nuvem chegam
+window.iniciarCRM = function(dadosNuvem){
+  db.clientes = dadosNuvem.clientes || [];
+  db.produtos = dadosNuvem.produtos || [];
+  db.locacoes = dadosNuvem.locacoes || [];
+
+  // Dados iniciais de demonstração, só se ainda não existir nada na nuvem
+  if(db.produtos.length===0 && db.clientes.length===0){
+    db.produtos = [
+      {id:1,nome:'Kit Jardim Encantado',cat:'Kit Completo',status:'Disponível',preco:350,qtd:2,desc:'Mesa oval, 8 cadeiras, arco floral, toalhas, arranjos de mesa',fotos:[]},
+      {id:2,nome:'Kit Balões Coloridos',cat:'Decoração',status:'Disponível',preco:150,qtd:5,desc:'200 balões, bomba, fio de balonismo, peso',fotos:[]},
+      {id:3,nome:'Tenda 6x6m',cat:'Lona/Tendas',status:'Disponível',preco:280,qtd:3,desc:'Tenda piramidal, com laterais',fotos:[]},
+    ];
+    db.clientes = [
+      {id:1,nome:'Ana Paula Silva',cpf:'123.456.789-00',tel:'(11) 99999-1111',email:'ana@email.com',endereco:'Rua das Flores, 100',bairro:'Centro',cidade:'São Paulo – SP',cep:'01000-000',obs:'Cliente fiel desde 2023'},
+      {id:2,nome:'Carlos Eduardo Lima',cpf:'987.654.321-00',tel:'(11) 98888-2222',email:'carlos@email.com',endereco:'Av. Paulista, 500',bairro:'Bela Vista',cidade:'São Paulo – SP',cep:'01310-000',obs:''},
+    ];
+    db.locacoes = [
+      {id:1,clienteId:1,produtoId:1,retirada:'2025-05-10',devolucao:'2025-05-12',valor:350,caucao:100,pagamento:'Pix',status:'Devolvido',obs:''},
+      {id:2,clienteId:2,produtoId:2,retirada:'2025-05-18',devolucao:'2025-05-20',valor:150,caucao:50,pagamento:'Dinheiro',status:'Ativo',obs:''},
+    ];
+    salvarDB();
+  }
+
+  populateSelects();
+  populateContratoSelects();
+  renderDashboard();
+  document.getElementById('btn-new-action').style.display='flex';
+
+  const overlay = document.getElementById('loading-overlay');
+  if(overlay) overlay.remove();
+};
 
 function salvarDB(){
   localStorage.setItem('crm_clientes',JSON.stringify(db.clientes));
@@ -849,22 +959,37 @@ function salvarDB(){
 }
 
 // =============== FOTOS ===============
-let fotosTemp = [];
+let fotosTemp = [];      // URLs das fotos já enviadas ao Storage
+let fotosCarregando = 0; // quantas fotos estão sendo enviadas agora (mostra placeholder)
+
 function adicionarFotos(e){
   const files = Array.from(e.target.files);
-  files.slice(0, 5-fotosTemp.length).forEach(f=>{
-    const r = new FileReader();
-    r.onload = ev=>{ fotosTemp.push(ev.target.result); renderFotos(); };
-    r.readAsDataURL(f);
+  const espacosLivres = Math.max(0, 5 - fotosTemp.length - fotosCarregando);
+  files.slice(0, espacosLivres).forEach(f=>{
+    fotosCarregando++;
+    renderFotos();
+    window.uploadFotoParaStorage(f).then(url=>{
+      fotosCarregando--;
+      fotosTemp.push(url);
+      renderFotos();
+    }).catch(err=>{
+      fotosCarregando--;
+      console.error('Erro ao enviar foto:', err);
+      toast('Não foi possível enviar uma das fotos.', 3000);
+      renderFotos();
+    });
   });
+  e.target.value = ''; // permite selecionar o mesmo arquivo de novo depois
 }
 function renderFotos(){
   const prev = document.getElementById('foto-preview');
+  const placeholders = Array.from({length: fotosCarregando}, ()=>`
+    <div class="foto-thumb foto-carregando"><div class="spinner" style="width:20px;height:20px;border-width:2px;"></div></div>`).join('');
   prev.innerHTML = fotosTemp.map((src,i)=>`
     <div class="foto-thumb">
       <img src="${src}">
       <button onclick="removerFoto(${i})">✕</button>
-    </div>`).join('');
+    </div>`).join('') + placeholders;
 }
 function removerFoto(i){ fotosTemp.splice(i,1); renderFotos(); }
 
@@ -1419,10 +1544,8 @@ function toast(msg, dur=2500){
 }
 
 // =============== INIT ===============
-populateSelects();
-populateContratoSelects();
-renderDashboard();
-document.getElementById('btn-new-action').style.display='flex';
+// (populateSelects/populateContratoSelects/renderDashboard agora rodam dentro de
+// iniciarCRM(), chamada pelo script do Firebase assim que os dados da nuvem chegam)
 
 // Bottom nav click handlers (already set up in navigateTo above via querySelectorAll)
 // Ensure bottom nav and fab are wired
